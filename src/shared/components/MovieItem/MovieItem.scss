@@ -1,0 +1,13 @@
+.movie-item-box {
+  display: inline-grid;
+  width: 185px;
+  word-wrap: break-word;
+  margin: 15px;
+  padding: 15px;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.movie-title {
+  padding: 5px 0;
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as moviesAPI from '../../services/moviesAPI/moviesAPI';
-import { TextField, FormControl, Button } from '@material-ui/core';
-
+import { TextField, FormControl, Button, FormLabel } from '@material-ui/core';
+import Ratings from 'react-ratings-declarative';
 import MovieItem from '../MovieItem/MovieItem';
 
 import './MovieList.scss';
@@ -15,11 +15,10 @@ const MovieList = () => {
 
   const [searchValue, setSearchValue] = useState('');
 
-  const [filterValue, setFilterValue] = useState('');
+  const [ratingsValue, setRatingsValue] = useState(0);
 
   useEffect(() => {
     moviesAPI.getMoviesConfig().then(({ data }) => {
-      console.log('config', data);
       setMoviesConfigState(data.images);
     });
 
@@ -30,14 +29,7 @@ const MovieList = () => {
     });
   }, []);
 
-  useEffect(() => {
-    let moviesListCopy = moviesListState.filter(item =>
-      item.title.toLowerCase().includes(filterValue.toLowerCase())
-    );
-    setMoviesListCopyState(moviesListCopy);
-  }, [moviesListState, filterValue]);
-
-  const searchMovies = () => {
+  const searchMoviesHandler = () => {
     moviesAPI.searchMovie(searchValue).then(({ data }) => {
       const { results } = data;
       setMoviesListState(results);
@@ -45,38 +37,66 @@ const MovieList = () => {
     });
   };
 
+  const newRatingsHandler = newRating => {
+    let maxRating = newRating * 2;
+    let minRating = maxRating - 2;
+
+    let moviesListCopy = moviesListState.filter(
+      item => item.vote_average >= minRating && item.vote_average <= maxRating
+    );
+    setMoviesListCopyState(moviesListCopy);
+    setRatingsValue(newRating);
+  };
+
   return (
     <>
-      <FormControl>
-        <TextField
-          label="Search Movie"
-          value={searchValue}
-          onChange={e => {
-            setSearchValue(e.target.value);
-          }}
-        />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={searchMovies}
-          disabled={!searchValue}
-        >
-          Search
-        </Button>
-      </FormControl>
+      <div className="controls-row">
+        <FormControl>
+          <TextField
+            label="Search Movie"
+            value={searchValue}
+            onChange={e => {
+              setSearchValue(e.target.value);
+            }}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={searchMoviesHandler}
+            disabled={!searchValue}
+          >
+            Search
+          </Button>
+        </FormControl>
 
-      <FormControl>
-        <TextField
-          label="Filter by name"
-          value={filterValue}
-          onChange={e => {
-            setFilterValue(e.target.value);
-          }}
-        />
-      </FormControl>
+        <FormControl>
+          <FormLabel>Rating:</FormLabel>
+          <Ratings
+            rating={ratingsValue}
+            changeRating={newRatingsHandler}
+            widgetRatedColors="red"
+            widgetHoverColors="red"
+          >
+            <Ratings.Widget widgetRatedColor="red" widgetHoverColor="red" />
+            <Ratings.Widget widgetRatedColor="red" widgetHoverColor="red" />
+            <Ratings.Widget widgetRatedColor="red" widgetHoverColor="red" />
+            <Ratings.Widget widgetRatedColor="red" widgetHoverColor="red" />
+            <Ratings.Widget widgetRatedColor="red" widgetHoverColor="red" />
+          </Ratings>
+          <small
+            className="clear-ratings"
+            onClick={() => {
+              setMoviesListCopyState(moviesListState);
+              setRatingsValue(0);
+            }}
+          >
+            Clear
+          </small>
+        </FormControl>
+      </div>
 
       <div className="movie-list-container">
-        {moviesListCopyState.length &&
+        {moviesListCopyState &&
           moviesListCopyState.map(item => (
             // poster_sizes[2] refers to 'w185' size
             <MovieItem

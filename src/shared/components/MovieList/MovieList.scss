@@ -1,0 +1,25 @@
+.movie-list-container {
+  display: block;
+  text-align: center;
+}
+
+.controls-row {
+  display: flex;
+  justify-content: center;
+}
+
+.controls-row .MuiFormControl-root {
+  box-sizing: border-box;
+  margin: 0 15px;
+  display: inline-block;
+}
+
+.controls-row .MuiFormControl-root .MuiButtonBase-root {
+  vertical-align: bottom;
+}
+
+.clear-ratings {
+  text-decoration: underline;
+  cursor: pointer;
+  margin: 0 15px;
+}
