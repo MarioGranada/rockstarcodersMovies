@@ -1,11 +1,40 @@
 .movie-info-modal {
   overflow: scroll;
 }
+
 .movie-info-modal-container {
   max-width: 700px;
   background-color: #fff;
   padding: 25px;
-  display: flex;
+  display: block;
   margin: 25px auto;
   overflow-y: scroll;
+}
+
+.modal-top-bar {
+  text-align: right;
+  margin-bottom: 10px;
+}
+
+.modal-top-bar .MuiSvgIcon-root {
+  cursor: pointer;
+}
+
+.movie-data-box {
+  display: inline-flex;
+  justify-content: space-between;
+}
+
+.main-poster,
+.movie-data {
+  padding: 10px;
+}
+
+.data-field {
+  padding: 5px 0;
+  text-align: justify;
+}
+
+.data-title {
+  font-weight: 700;
 }

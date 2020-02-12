@@ -11,7 +11,7 @@ const MovieItem = ({ movie, posterSize, imageURL, onMovieClick }) => {
           alt={movie.title}
         />
       ) : null}
-      <span className="movie-title">{movie.title}</span>
+      <h4 className="movie-title">{movie.title}</h4>
     </div>
   );
 };

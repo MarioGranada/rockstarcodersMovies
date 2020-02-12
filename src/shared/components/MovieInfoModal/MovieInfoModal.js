@@ -46,35 +46,43 @@ const MovieInfoModal = ({ isModalOpen, movieId, onModalClose, imageURL }) => {
             <div className="movie-data">
               <h3>{movieDataState.title}</h3>
               <MovieRating ratingsValue={movieDataState.vote_average / 2} />
-              <div className="overview data-field">
+              <div className="data-field">
                 <span className="data-title">Popularity:</span>{' '}
                 {movieDataState.popularity}
               </div>
-              <div className="overview data-field">
+              <div className="data-field">
                 <span className="data-title">Language:</span>{' '}
                 {movieDataState.original_language}
               </div>
-              <div className="overview data-field">
+              <div className="data-field">
+                <span className="data-title">Runtime:</span>{' '}
+                {movieDataState.runtime} min.
+              </div>
+              <div className="data-field">
                 <span className="data-title">Overview:</span>{' '}
                 {movieDataState.overview}
               </div>
-              <div className="overview data-field">
+              <div className="data-field">
                 <span className="data-title">Genre:</span>{' '}
-                {movieDataState.genres.map(item => (
+                {movieDataState.genres.map((item, index) => (
                   <span className="data-list-item" key={item.name}>
-                    {item.name}{' '}
+                    {item.name}
+                    {index < movieDataState.genres.length - 1 ? ', ' : ''}
                   </span>
                 ))}
               </div>
-              <div className="overview data-field">
+              <div className="data-field">
                 <span className="data-title">Produced By:</span>{' '}
-                {movieDataState.production_companies.map(item => (
+                {movieDataState.production_companies.map((item, index) => (
                   <span className="data-list-item" key={item.name}>
-                    {item.name}{' '}
+                    {item.name}
+                    {index < movieDataState.production_companies.length - 1
+                      ? ', '
+                      : ''}
                   </span>
                 ))}
               </div>
-              <div className="overview data-field">
+              <div className="data-field">
                 <span className="data-title">Release Date:</span>{' '}
                 {movieDataState.release_date}
               </div>

@@ -3,11 +3,16 @@
   width: 185px;
   word-wrap: break-word;
   margin: 15px;
-  padding: 15px;
+  padding: 15px 0;
   cursor: pointer;
   box-sizing: border-box;
+  border-radius: 5px;
 }
 
 .movie-title {
   padding: 5px 0;
+}
+
+.movie-item-box:hover {
+  box-shadow: 0 5px 10px 0px #333;
 }

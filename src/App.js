@@ -7,6 +7,7 @@ import './App.css';
 
 const App = () => {
   // Since this is a single container application, there is no need to add routing module
+  // Also, there is no need to add Redux due to everything is controlled by services, components and given properties
   return (
     <div className="App">
       <Header />
