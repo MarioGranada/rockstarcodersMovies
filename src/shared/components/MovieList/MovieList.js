@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import * as moviesAPI from '../../services/moviesAPI/moviesAPI';
-import { TextField, FormControl, Button, FormLabel } from '@material-ui/core';
-import Ratings from 'react-ratings-declarative';
+import { TextField, FormControl, Button } from '@material-ui/core';
 import MovieItem from '../MovieItem/MovieItem';
+import MovieInfoModal from '../MovieInfoModal/MovieInfoModal';
+import MovieRating from '../MovieRating/MovieRating';
 
 import './MovieList.scss';
 
@@ -16,6 +17,10 @@ const MovieList = () => {
   const [searchValue, setSearchValue] = useState('');
 
   const [ratingsValue, setRatingsValue] = useState(0);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [currentMovieId, setCurrentMovieId] = useState(null);
 
   useEffect(() => {
     moviesAPI.getMoviesConfig().then(({ data }) => {
@@ -48,6 +53,11 @@ const MovieList = () => {
     setRatingsValue(newRating);
   };
 
+  const onClearRatingsHandler = () => {
+    setMoviesListCopyState(moviesListState);
+    setRatingsValue(0);
+  };
+
   return (
     <>
       <div className="controls-row">
@@ -69,36 +79,17 @@ const MovieList = () => {
           </Button>
         </FormControl>
 
-        <FormControl>
-          <FormLabel>Rating:</FormLabel>
-          <Ratings
-            rating={ratingsValue}
-            changeRating={newRatingsHandler}
-            widgetRatedColors="red"
-            widgetHoverColors="red"
-          >
-            <Ratings.Widget widgetRatedColor="red" widgetHoverColor="red" />
-            <Ratings.Widget widgetRatedColor="red" widgetHoverColor="red" />
-            <Ratings.Widget widgetRatedColor="red" widgetHoverColor="red" />
-            <Ratings.Widget widgetRatedColor="red" widgetHoverColor="red" />
-            <Ratings.Widget widgetRatedColor="red" widgetHoverColor="red" />
-          </Ratings>
-          <small
-            className="clear-ratings"
-            onClick={() => {
-              setMoviesListCopyState(moviesListState);
-              setRatingsValue(0);
-            }}
-          >
-            Clear
-          </small>
-        </FormControl>
+        <MovieRating
+          includeClear={true}
+          onClearRating={onClearRatingsHandler}
+          ratingsValue={ratingsValue}
+          newRatingsHandler={newRatingsHandler}
+        />
       </div>
 
       <div className="movie-list-container">
         {moviesListCopyState &&
           moviesListCopyState.map(item => (
-            // poster_sizes[2] refers to 'w185' size
             <MovieItem
               key={item.id}
               movie={item}
@@ -108,9 +99,24 @@ const MovieList = () => {
               imageURL={
                 (moviesConfigState && moviesConfigState.secure_base_url) || ''
               }
+              onMovieClick={() => {
+                setIsModalOpen(true);
+                setCurrentMovieId(item.id);
+              }}
             />
           ))}
       </div>
+
+      <MovieInfoModal
+        isModalOpen={isModalOpen}
+        onModalClose={() => {
+          setIsModalOpen(false);
+        }}
+        movieId={currentMovieId}
+        imageURL={
+          (moviesConfigState && moviesConfigState.secure_base_url) || ''
+        }
+      />
     </>
   );
 };

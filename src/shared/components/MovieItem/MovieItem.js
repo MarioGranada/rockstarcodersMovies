@@ -2,9 +2,9 @@ import React from 'react';
 
 import './MovieItem.scss';
 
-const MovieItem = ({ movie, posterSize, imageURL }) => {
+const MovieItem = ({ movie, posterSize, imageURL, onMovieClick }) => {
   return (
-    <div className="movie-item-box">
+    <div className="movie-item-box" onClick={onMovieClick}>
       {imageURL && posterSize && movie.poster_path ? (
         <img
           src={`${imageURL}/${posterSize}/${movie.poster_path}`}

@@ -24,6 +24,14 @@ export const getMovieList = () => {
   });
 };
 
+export const getMovieById = movieId => {
+  return baseAxiosInstance.get(`/movie/${movieId}`, {
+    params: {
+      api_key: baseParams.api_key
+    }
+  });
+};
+
 export const searchMovie = movie => {
   return baseAxiosInstance.get('/search/movie', {
     params: {
